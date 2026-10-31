@@ -19,7 +19,7 @@ that need an unseen metabolite). A matched ablation finds no measurable effect o
 | `src/genenzyme/` | model, data pipeline, training and inference code; `stats.py` (Wilson, McNemar, clustered bootstrap). The model files other than the deployed configuration are development variants; `models/mhggat_rag.py` is a Foldseek retrieval-augmented experiment that is not part of the deployed model |
 | `configs/cbv2_t010.yaml` | hyperparameters of the deployed model |
 | `results/tables/` | CSVs behind the re-ranking results and the architecture sweep |
-| `docs/` | `REPRODUCE.md`, `BENCHMARK.md`, `DATA_SOURCES.md`, `LIMITATIONS.md` |
+| `docs/` | `REPRODUCE.md`, `BENCHMARK.md`, `DATA_SOURCES.md` |
 | `tests/test_audit_scorer.py` | unit tests for the stereo-respecting multiset comparison |
 
 ## Quickstart
@@ -46,17 +46,6 @@ The truth appears somewhere in the 400 draws for 336 of 2,349 rows (14.30%). The
 equal to a known train or val reaction, which is valid on this benchmark only because test reactions are absent
 from train by construction; the no-lookup row is the figure that applies to a deployed setting.
 Sources: `results/tables/rerank_free_policies_summary.csv`, `results/tables/rerank_by_budget.csv`.
-
-## Not included
-- The script that originally assigned reactions to train / val / test was not recovered. The split files are the released
-  artefact; `scripts/assign_difficulty.py` regenerates the difficulty classes from them, but the split itself cannot be
-  regenerated from scratch.
-- The 400-sample candidate pools, the trained checkpoint, ESM-2 embeddings and AlphaFold structures. Recovery figures
-  can be re-scored from the shipped tables but not regenerated (see `docs/REPRODUCE.md`).
-
-## Limitations
-Read `docs/LIMITATIONS.md` before using the splits: they are disjoint by exact reaction string, not by enzyme
-(818 of 1,277 test enzymes also occur in train), and all models are single-seed.
 
 ## Data and licence
 Code: MIT (`LICENSE`). Data in `data/`: CC BY 4.0 (`data/LICENSE.md`); it is derived from CC BY 4.0 sources, see

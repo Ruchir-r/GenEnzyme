@@ -22,7 +22,7 @@ Rows are (enzyme, reaction) pairs. The vocabulary has 16053 entries (7 special +
 
 ## Splits
 Reactions are **disjoint by exact string** across train, val and test (0 shared in every pair). The split is
-**not** disjoint by enzyme (see LIMITATIONS.md) and is not a similarity-clustered split.
+**not** disjoint by enzyme and is not a similarity-clustered split.
 The script that assigned rows to splits was not recovered; `scripts/reconstruct_em_ext.py` rebuilds the corpus,
 vocabulary and charge-form rules from public EnzymeMap but does **not** reproduce the split assignment.
 The released split files are the authoritative definition.
