@@ -1,0 +1,16 @@
+# Versions read from the cluster environments used for the reported runs.
+# NOT solved or tested as a fresh environment; treat as the intended pins and report any resolver conflict.
+name: genenzyme
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.13
+  - numpy=1.26.4
+  - pandas=2.3.3
+  - rdkit=2025.09.6
+  - pip
+  - pip:
+      - torch==2.2.1
+      - transformers==4.57.1
+      - torch_geometric==2.7.0
+      - optuna          # only for scripts/sweep/; the version used was not recorded
