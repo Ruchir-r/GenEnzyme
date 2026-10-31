@@ -1,0 +1,11 @@
+policy,full_1,full_5,full_10,prod_1,prod_5,prod_10,full_1_pct,full_10_pct
+draw order (baseline),2,19,53,19,80,147,0.09,2.26
+self-balance heavy (1),8,75,150,20,121,219,0.34,6.39
+novelty filter (2),4,33,83,21,101,177,0.17,3.53
+draw frequency (3),4,66,116,9,106,180,0.17,4.94
+novelty+frequency (2+3),34,122,166,43,162,244,1.45,7.07
+novelty+balance (1+2),78,198,268,91,241,338,3.32,11.41
+novelty+balance+freq (1+2+3),132,246,291,141,291,359,5.62,12.39
+balanced-only+freq,132,246,291,141,290,353,5.62,12.39
+learned (4),0,4,33,10,54,117,0.0,1.4
+learned+novelty (2+4),2,21,122,20,77,213,0.09,5.19

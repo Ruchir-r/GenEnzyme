@@ -1,0 +1,13 @@
+N,bucket,n,policy,f1,f10,f10_pct,p10
+25,novel_metabolite,1074,draw order,0,1,0.09,20
+25,novel_metabolite,1074,novelty+balance+freq,2,3,0.28,19
+25,novel_metabolite,1074,"balance+freq, NO novelty",0,3,0.28,19
+25,recombination,1275,draw order,2,52,4.08,127
+25,recombination,1275,novelty+balance+freq,54,86,6.75,164
+25,recombination,1275,"balance+freq, NO novelty",5,83,6.51,146
+400,novel_metabolite,1074,draw order,0,1,0.09,20
+400,novel_metabolite,1074,novelty+balance+freq,3,16,1.49,39
+400,novel_metabolite,1074,"balance+freq, NO novelty",0,12,1.12,35
+400,recombination,1275,draw order,2,52,4.08,127
+400,recombination,1275,novelty+balance+freq,129,275,21.57,320
+400,recombination,1275,"balance+freq, NO novelty",5,171,13.41,207

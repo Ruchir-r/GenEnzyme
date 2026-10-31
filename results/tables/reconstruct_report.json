@@ -1,0 +1,50 @@
+{
+ "embedded_set_source": "em_ext Entry set (proxy for the embedding cache)",
+ "R1": {
+  "pairs": 23451,
+  "em_ext_rows": 23451,
+  "reactions": 11088,
+  "em_ext_reactions": 11088,
+  "enzymes": 6649,
+  "em_ext_enzymes": 6649,
+  "exact": true
+ },
+ "R2": {
+  "plain_rule": {
+   "reactions": 11088,
+   "reproduced_exactly": 10973,
+   "pct": 98.96,
+   "em_ext_strings_not_produced": 115
+  },
+  "REJECTED_blanket_single_atom_ion_exception": {
+   "reactions": 11088,
+   "reproduced_exactly": 10402,
+   "pct": 93.81,
+   "em_ext_strings_not_produced": 686
+  }
+ },
+ "R3": {
+  "rebuilt_equals_shipped": true,
+  "old_size": 8882,
+  "new_size": 16053,
+  "appended": 7171
+ },
+ "R4": {
+  "rows": {
+   "test": 2349,
+   "train": 18758,
+   "val": 2344
+  },
+  "fractions": {
+   "test": 10.017,
+   "train": 79.988,
+   "val": 9.995
+  },
+  "train_target": 18760.8,
+  "train_cum_target_ok": true,
+  "trainval_target": 21105.9,
+  "trainval_ok": true,
+  "cross_split_reaction_overlap": 0,
+  "seed_recovered": false
+ }
+}

@@ -1,0 +1,21 @@
+N,policy,f1,f5,f10,p1,p10,oracle_full,oracle_prod
+25,draw order (baseline),2,19,53,19,147,89,220
+25,novelty+balance+freq (1+2+3),56,88,89,71,183,89,220
+25,"balance+freq, NO novelty (1+3)",5,66,86,16,165,89,220
+25,"balanced-only+freq, NO novelty",5,66,86,15,137,89,220
+50,draw order (baseline),2,19,53,19,147,141,329
+50,novelty+balance+freq (1+2+3),81,134,139,93,223,141,329
+50,"balance+freq, NO novelty (1+3)",1,81,125,13,196,141,329
+50,"balanced-only+freq, NO novelty",1,81,125,12,181,141,329
+100,draw order (baseline),2,19,53,19,147,209,446
+100,novelty+balance+freq (1+2+3),99,178,195,109,275,209,446
+100,"balance+freq, NO novelty (1+3)",3,101,158,12,223,209,446
+100,"balanced-only+freq, NO novelty",3,101,158,12,216,209,446
+200,draw order (baseline),2,19,53,19,147,271,552
+200,novelty+balance+freq (1+2+3),114,213,244,128,314,271,552
+200,"balance+freq, NO novelty (1+3)",2,110,170,11,227,271,552
+200,"balanced-only+freq, NO novelty",2,110,170,11,225,271,552
+400,draw order (baseline),2,19,53,19,147,336,653
+400,novelty+balance+freq (1+2+3),132,246,291,141,359,336,653
+400,"balance+freq, NO novelty (1+3)",5,111,183,10,242,336,653
+400,"balanced-only+freq, NO novelty",5,111,183,10,241,336,653
