@@ -1,0 +1,45 @@
+# Deployed model `cbv2_t010` = Optuna trial 10 of study cb_sweep_v2.
+# Values are copied from (a) the training command line recorded in the run log
+# (sweeps/cb_sweep_v2/logs/cbv2_t010.log) and (b) the trial row of
+# results/tables/cb_sweep_v2_leaderboard.csv. Learning rates are the rounded values actually passed
+# on the command line (6 significant digits); the leaderboard holds the unrounded trial values.
+# Diffed against the paper's supplementary table S3: every hyperparameter listed there matches. S3 also lists
+# 'cosine schedule', which is hard-coded in src/genenzyme/train.py (get_cosine_schedule_with_warmup), not a key here.
+# The focal-loss setting below (gamma 2.0) is part of the deployed configuration.
+run_tag: cbv2_t010
+seed: 0
+epochs: 12
+data:
+  train: data/enzymemap_ext/train.csv
+  val: data/enzymemap_ext/val.csv
+  test: data/enzymemap_ext/test.csv
+  vocab: data/enzymemap_ext/metabolite_vocab.csv      # token_id, token (converted from vocab_em_ext.json)
+  smiles_column: rxnsmiles_ordered
+  init_embed: chem_init_em_ext_d512.pt                 # Morgan-fingerprint init table, d=512 (built with src/genenzyme/data/build_chem_init.py); not in this repository
+model:
+  d_model: 512
+  nhead: 8
+  num_encoder_layers: 0                                # fixed (config.py default)
+  num_decoder_layers: 4
+  encoder_ffn_dim: 1536                                # ffn_mult 3 x d_model
+  decoder_ffn_dim: 1536
+  dropout: 0.2
+  vocab_size: 16053                                    # 7 special tokens + 16,046 metabolite tokens
+  esm_embedding_dim: 480                               # per-residue, float16, layer 12 (read from one embedding file)
+  gnn_mpnn_layers: 2                                   # RXN_NUM_MPNN_LAYERS passed at decode time
+  gnn_d_v: 16                                          # RXN_D_V passed at decode time
+optimizer:
+  base_lr: 0.00037305
+  gnn_lr: 0.00172272
+  weight_decay: 0.00176439
+  warmup_frac: 0.2
+  grad_clip: 1.0
+  batch_size: 32
+loss:
+  focal_gamma: 2.0
+  id_loss_weight: 0.0
+decoding_used_for_headline_pools:
+  mode: sample
+  num_candidates: 400
+  temperature: 1.0
+  length_norm: 1.0
