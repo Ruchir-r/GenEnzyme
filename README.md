@@ -1,40 +1,67 @@
 # GenEnzyme
 
-Generative prediction of enzymatic reactions from the enzyme alone, with an exact, reaction-disjoint evaluation.
+Code, benchmark and scorer accompanying a study of structure-conditioned generative prediction of enzyme
+reaction products (enzyme in, reaction out). The repository releases the **EnzymeMap_ext** splits and
+difficulty classes, the stereo-aware scorer used for every recovery number, the code as it was run, and the
+tables behind the re-ranking results.
 
-> **Status: under construction.** This repository is being prepared alongside the accompanying manuscript. Code, data splits and documentation are being added and may change without notice. Nothing here is final, and results should not be reproduced or cited from this repository until this notice is removed.
+On the reaction-disjoint EnzymeMap_ext benchmark, the model recovers the complete reaction for 14.3% of test
+enzyme-reaction pairs within 400 samples (25.0% for recombinations of metabolites seen in training, 1.6% for reactions
+that need an unseen metabolite). A matched ablation finds no measurable effect of structure on exact recovery.
 
-## What this project is
+## Contents
+| path | what |
+|---|---|
+| `data/enzymemap_ext/` | train / val / test splits, `difficulty_classes.csv`, `metabolite_vocab.csv`, enzyme sequences |
+| `scripts/full_rxn_audit.py` | candidate-pool scorer (strict full-reaction and product-set recovery) |
+| `scripts/assign_difficulty.py` | assigns `recombination` / `novel_metabolite` / `exact_seen` classes |
+| `scripts/` | re-ranking, bucketed scoring, baselines, sweep worker (as run on the cluster) |
+| `src/genenzyme/` | model, data pipeline, training and inference code; `stats.py` (Wilson, McNemar, clustered bootstrap). The model files other than the deployed configuration are development variants; `models/mhggat_rag.py` is a Foldseek retrieval-augmented experiment that is not part of the deployed model |
+| `configs/cbv2_t010.yaml` | hyperparameters of the deployed model |
+| `results/tables/` | CSVs behind the re-ranking results and the architecture sweep |
+| `docs/` | `REPRODUCE.md`, `BENCHMARK.md`, `DATA_SOURCES.md`, `LIMITATIONS.md` |
+| `tests/test_audit_scorer.py` | unit tests for the stereo-respecting multiset comparison |
 
-GenEnzyme accompanies the manuscript *Generative Models for Novel Enzymatic Reactions: Recombination and Its Limits*. It studies a structure-conditioned generative model that writes a complete reaction (reactants and products) from an enzyme's sequence and structure, and evaluates it under exact, stereo-respecting scoring on a reaction-disjoint benchmark, EnzymeMap_ext, in which no test reaction appears in training.
+## Quickstart
+```bash
+conda env create -f environment.yml && conda activate genenzyme
+python scripts/assign_difficulty.py --train data/enzymemap_ext/train.csv --test data/enzymemap_ext/test.csv --out difficulty_classes.csv
+python tests/test_audit_scorer.py
+```
+The second command should print `DIFFICULTY_COUNTS {'novel_metabolite': 1074, 'recombination': 1275} n = 2349`;
+the third, `RESULT all passed`. See `docs/REPRODUCE.md` for what each paper number needs and what this
+repository does not cover.
 
-## Planned contents
+## Headline numbers shipped as tables
+Free-running generation, 400 samples per test reaction (T = 1.0), n = 2,349 test rows, full reaction
+(reactants and products, stereochemistry respected):
 
-The following are intended for release with the paper:
+| | top-1 | top-10 |
+|---|---:|---:|
+| draw order | 2 (0.09%) | 53 (2.26%) |
+| re-ranked, with train/val lookup | 132 (5.62%) | 291 (12.39%) |
+| re-ranked, without lookup | 5 (0.21%) | not tabulated here |
 
-- **Benchmark splits** for EnzymeMap_ext (train / validation / test, reaction-disjoint).
-- **Difficulty-class assignment** (`exact_seen`, `recombination`, `novel_metabolite`, with the `novel_product` and `novel_reactant_only` refinements).
-- **Audit scorer** (`full_rxn_audit.py`): stereo-respecting multiset comparison, product-set and full-reaction recovery, Wilson and enzyme-clustered bootstrap intervals.
-- **Free-running re-ranking** (assumption-free and novelty-assuming variants).
-- **Comparison scripts** for the homology baselines (BLASTp, DIAMOND) and the retrained RxnPred and Horizyn comparisons.
-- **Model code** for the sequence-and-structure encoder and the reaction decoder.
+The truth appears somewhere in the 400 draws for 336 of 2,349 rows (14.30%). The lookup variant removes candidates
+equal to a known train or val reaction, which is valid on this benchmark only because test reactions are absent
+from train by construction; the no-lookup row is the figure that applies to a deployed setting.
+Sources: `results/tables/rerank_free_policies_summary.csv`, `results/tables/rerank_by_budget.csv`.
 
-## Repository layout
+## Not included
+- The script that originally assigned reactions to train / val / test was not recovered. The split files are the released
+  artefact; `scripts/assign_difficulty.py` regenerates the difficulty classes from them, but the split itself cannot be
+  regenerated from scratch.
+- The 400-sample candidate pools, the trained checkpoint, ESM-2 embeddings and AlphaFold structures. Recovery figures
+  can be re-scored from the shipped tables but not regenerated (see `docs/REPRODUCE.md`).
 
-To be added.
+## Limitations
+Read `docs/LIMITATIONS.md` before using the splits: they are disjoint by exact reaction string, not by enzyme
+(818 of 1,277 test enzymes also occur in train), and all models are single-seed.
 
-## Usage
-
-To be added.
-
-## Data and licensing
-
-EnzymeMap_ext is derived from the public EnzymeMap database. Data sources, licences and redistribution terms will be documented here before release.
+## Data and licence
+Code: MIT (`LICENSE`). Data in `data/`: CC BY 4.0 (`data/LICENSE.md`); it is derived from CC BY 4.0 sources, see
+`docs/DATA_SOURCES.md` for provenance and attribution.
 
 ## Citation
-
-A preprint reference will be added when available.
-
-## Authors
-
-Ruchir R, Srikrishnan Balamukundhan and Karthik Raman, Department of Data Science and Artificial Intelligence, IIT Madras, Chennai, India.
+Cite the paper (preprint / DOI to be added once available) and, for the underlying reaction data, the EnzymeMap paper listed in
+`docs/DATA_SOURCES.md`.
